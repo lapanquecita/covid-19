@@ -4,4 +4,4 @@
 
 # Viruela símica
 
-![Imagen 1](./2.png)
+![Imagen 2](./2.png)
