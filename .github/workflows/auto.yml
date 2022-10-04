@@ -2,7 +2,7 @@ name: Profile Updater
 
 on:
   schedule:
-    - cron: "0 12 * * *"
+    - cron: "0 */12 * * *"
 
 jobs:
   build:
@@ -30,7 +30,6 @@ jobs:
           pip install -r requirements.txt
           python scraper.py
           python plotter.py
-          python plotter2.py
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
