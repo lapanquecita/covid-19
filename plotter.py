@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 
-NUMERO_DE_SEMANAS = 43
+NUMERO_DE_SEMANAS = 30
 
 
 def main():
@@ -33,23 +33,35 @@ def main():
     def_df = def_df.resample("W").sum()
     def_df = def_df[-NUMERO_DE_SEMANAS:]
 
-    fig = make_subplots(rows=1, cols=2, horizontal_spacing=0.1)
+    fig = make_subplots(
+        rows=1, cols=2,
+        horizontal_spacing=0.1,
+        subplot_titles=[conf_titulo, def_titulo],
+    )
 
     fig.add_trace(
-        go.Scatter(x=conf_df.index,
-                   y=conf_df["diff"],
-                   mode="lines",
-                   line_color="#1de9b6",
-                   line_width=5,
-                   fill="tozeroy"), col=1, row=1)
+        go.Scatter(
+            x=conf_df.index,
+            y=conf_df["diff"],
+            mode="lines",
+            line_color="#18ffff",
+            line_shape="spline",
+            line_width=5,
+            fill="tozeroy"),
+        col=1, row=1
+    )
 
     fig.add_trace(
-        go.Scatter(x=def_df.index,
-                   y=def_df["diff"],
-                   mode="lines",
-                   line_color="#ff9100",
-                   line_width=5,
-                   fill="tozeroy"), col=2, row=1)
+        go.Scatter(
+            x=def_df.index,
+            y=def_df["diff"],
+            mode="lines",
+            line_color="#eeff41",
+            line_shape="spline",
+            line_width=5,
+            fill="tozeroy"),
+        col=2, row=1
+    )
 
     fig.update_xaxes(
         tickformat="%d-%m<br>'%y",
@@ -81,10 +93,10 @@ def main():
     fig.update_layout(
         showlegend=False,
         width=1280,
-        height=500,
-        font_color="white",
+        height=550,
+        font_color="#FFFFFF",
         font_size=14,
-        margin_t=120,
+        margin_t=140,
         margin_l=110,
         margin_r=40,
         margin_b=120,
@@ -92,37 +104,22 @@ def main():
         title_x=0.5,
         title_y=0.95,
         title_font_size=24,
-        paper_bgcolor="#1E1E1E",
-        plot_bgcolor="#20252f",
-        annotations=[
-            dict(
-                x=0.23,
-                y=1.08,
-                xanchor="center",
-                yanchor="top",
-                xref="paper",
-                yref="paper",
-                text=conf_titulo
-            ),
-            dict(
-                x=0.78,
-                y=1.08,
-                xanchor="center",
-                yanchor="top",
-                xref="paper",
-                yref="paper",
-                text=def_titulo
-            ),
-            dict(
-                x=0.5,
-                y=-0.4,
-                xanchor="center",
-                yanchor="top",
-                xref="paper",
-                yref="paper",
-                text=f"Actualizado el {datetime.now():%d-%m-%Y}"
-            )
-        ]
+        plot_bgcolor="#111111",
+        paper_bgcolor="#282A3A",
+    )
+
+    # Ajustamos la posición de los títulos
+    for anotacion in fig["layout"]["annotations"]:
+        anotacion["y"] += 0.05
+
+    fig.add_annotation(
+        x=0.5,
+        y=-0.35,
+        xanchor="center",
+        yanchor="top",
+        xref="paper",
+        yref="paper",
+        text=f"Actualizado el {datetime.now():%d-%m-%Y}"
     )
 
     fig.write_image("./1.png")
